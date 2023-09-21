@@ -1,6 +1,6 @@
 import PusherServer from "pusher";
 import PusherClient from "pusher-js";
-import usePersistedStore from "./zustand/usePersistedStore";
+import usePersistedStore from "@/store/usePersistedStore";
 
 export const pusherServer = new PusherServer({
   appId: process.env.PUSHER_APP_ID!,
@@ -12,10 +12,6 @@ export const pusherServer = new PusherServer({
 
 export const pusherClient = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
   cluster: "eu",
-  userAuthentication: {
-    endpoint: "/api/auth",
-    transport: "ajax",
-  },
   channelAuthorization: {
     endpoint: "/api/channel/auth",
     transport: "ajax",

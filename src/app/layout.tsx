@@ -1,10 +1,10 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Header from "./(index)/components/Header";
-import { ThemeProvider } from "./(index)/components/ThemeProvider";
-import ReactQueryClientProvider from "../lib/react-query";
-import Footer from "./(index)/components/Footer";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import ThemeContainer from "@/components/theme/ThemeContainer";
+import ReactQueryClientProvider from "@/lib/ReactQueryClientProvider";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,15 +17,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html className="h-full" lang="en">
       <ReactQueryClientProvider>
-        <ThemeProvider>
+        <ThemeContainer>
           <body
             className={`${inter.className} h-fill-available grid grid-rows-[auto_1fr] gap-2 bg-fill-3 text-sm text-primary md:text-base`}
           >
             <Header />
-            <main className="px-2 relative">{children}</main>
+            <main className="relative px-2">{children}</main>
             <Footer />
           </body>
-        </ThemeProvider>
+        </ThemeContainer>
       </ReactQueryClientProvider>
     </html>
   );

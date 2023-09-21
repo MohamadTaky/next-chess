@@ -1,5 +1,5 @@
-import Button from "@/components/Button";
-import Card from "@/components/Card";
+import Button from "@/components/shared/Button";
+import Card from "@/components/shared/Card";
 import Link from "next/link";
 
 export default function Home() {

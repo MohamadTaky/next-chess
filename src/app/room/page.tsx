@@ -1,7 +1,7 @@
-import Card from "@/components/Card";
-import JoinRoomForm from "./components/JoinRoomForm";
-import PlayerInfo from "./components/PlayerInfo";
-import CreateRoomButton from "./components/CreateRoomButton";
+import CreateRoomButton from "@/components/room/CreateRoomButton";
+import JoinRoomForm from "@/components/room/JoinRoomForm";
+import PlayerInfo from "@/components/room/PlayerInfo";
+import Card from "@/components/shared/Card";
 
 export default function RoomsPage() {
   return (
