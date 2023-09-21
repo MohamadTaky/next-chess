@@ -2,26 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer utilities {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .scrollbar-rounded::-webkit-scrollbar-thumb {
+    @apply rounded-lg;
+  }
+  .h-fill-available {
+    @apply h-screen;
+    height: -webkit-fill-available;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer base {
+  :root {
+    --fill-1: 230 230 230;
+    --fill-2: 242 242 242;
+    --fill-3: 255 255 255;
+    --primary: 0 0 0;
+  }
+  .dark {
+    --fill-1: 48 50 54;
+    --fill-2: 35 38 41;
+    --fill-3: 24 25 27;
+    --primary: 255 255 255;
+  }
 }
