@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const isDarkMode = cookies().get("dark")?.value === "true" ? "dark" : "";
+  const isDarkMode = cookies().get("dark")?.value === "1" ? "dark" : "";
   return (
     <html className="h-full" lang="en">
       <ReactQueryClientProvider>

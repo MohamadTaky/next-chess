@@ -2,17 +2,23 @@
 
 import Button from "@/components/shared/Button";
 import { MoonIcon, SunIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type DarkModeToggleProps = {
-  isDarkMode: boolean;
+  darkMode: boolean;
 };
 
-export default function DarkModeToggle({ isDarkMode }: DarkModeToggleProps) {
-  const { refresh } = useRouter();
+export default function DarkModeToggle({ darkMode }: DarkModeToggleProps) {
+  const [isDarkMode, setIsDarkMode] = useState(darkMode);
   const handleClick = () => {
-    document.cookie = `dark=${!isDarkMode}; expires=${new Date(Date.now() + 60 * 60 * 24 * 365 * 1000)}; path=/`;
-    refresh();
+    if (isDarkMode) {
+      document.body.classList.remove("dark");
+      document.cookie = "dark=; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    } else {
+      document.body.classList.add("dark");
+      document.cookie = `dark=1; expires=${new Date(Date.now() + 60 * 60 * 24 * 365 * 1000)}; path=/`;
+    }
+    setIsDarkMode(!isDarkMode);
   };
 
   return (
