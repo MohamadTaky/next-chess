@@ -28,6 +28,7 @@ type TileProps = {
 };
 
 export default function Tile({ row, col, piece, clickHandler }: TileProps) {
+  
   return (
     <>
       <rect

@@ -14,7 +14,6 @@ export default function Chat() {
         <User2Icon className="box-content rounded-full bg-fill-1 fill-primary stroke-none p-2" size="38" />
         <p className="text-lg font-semibold">
           {opponentInfo?.info.username}
-          <span className="ml-2 text-sm font-normal text-green-600 dark:text-green-500">typing</span>
         </p>
       </div>
       <MessagesList />
