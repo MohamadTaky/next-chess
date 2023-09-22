@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
-import ThemeContainer from "@/components/theme/ThemeContainer";
 import ReactQueryClientProvider from "@/lib/ReactQueryClientProvider";
+import { cookies } from "next/headers";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -14,18 +14,17 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const isDarkMode = cookies().get("dark")?.value === "true" ? "dark" : "";
   return (
     <html className="h-full" lang="en">
       <ReactQueryClientProvider>
-        <ThemeContainer>
-          <body
-            className={`${inter.className} h-fill-available grid grid-rows-[auto_1fr] gap-2 bg-fill-3 text-sm text-primary md:text-base`}
-          >
-            <Header />
-            <main className="relative px-2">{children}</main>
-            <Footer />
-          </body>
-        </ThemeContainer>
+        <body
+          className={`${inter.className} ${isDarkMode} h-fill-available grid grid-rows-[auto_1fr] gap-2 bg-fill-3 text-sm text-primary md:text-base`}
+        >
+          <Header />
+          <main className="relative px-2">{children}</main>
+          <Footer />
+        </body>
       </ReactQueryClientProvider>
     </html>
   );

@@ -2,6 +2,7 @@
 
 import Chat from "@/components/room/Chat";
 import OnlineBoard from "@/components/room/OnlineBoard";
+import OnlineEndGameMenu from "@/components/room/OnlineEndGameMenu";
 import OnlinePromotionMenu from "@/components/room/OnlinePromotionMenu";
 import RoomInfo from "@/components/room/RoomInfo";
 import usePusherCallbacks from "@/hooks/room/usePusherCallbacks";
@@ -15,9 +16,11 @@ export default function RoomPage() {
   return isGameStarted ? (
     <section className="grid h-full gap-4 md:grid-cols-[minmax(auto,24rem)_1fr] lg:grid-cols-[minmax(auto,28rem)_1fr]">
       <Chat />
-      <OnlineBoard />
-      <OnlinePromotionMenu />
-      {/* {endGameStatus !== "none" && <EndGameMenu />} */}
+      <div>
+        <OnlineBoard />
+        <OnlinePromotionMenu />
+        <OnlineEndGameMenu />
+      </div>
     </section>
   ) : (
     <RoomInfo />
