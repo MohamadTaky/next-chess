@@ -14,7 +14,7 @@ export default function RoomPage() {
 
   usePusherCallbacks();
 
-  return !isGameStarted ? (
+  return isGameStarted ? (
     <section className="grid h-full gap-4 md:grid-cols-[minmax(auto,24rem)_1fr] lg:grid-cols-[minmax(auto,28rem)_1fr]">
       <Chat />
       <div className="space-y-2">

@@ -5,7 +5,6 @@ import useStore from "@/store/useStore";
 import { User2Icon } from "lucide-react";
 import MessageForm from "./MessageForm";
 import MessagesList from "./MessagesList";
-import ConnectionStatus from "./ConnectionStatus";
 
 export default function Chat() {
   const opponentInfo = useStore((store) => store.opponentInfo);
