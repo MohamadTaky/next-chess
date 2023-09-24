@@ -32,7 +32,7 @@ export default function ToastItem({ text, type, id, duration = 5000 }: ToastItem
   }, [duration]);
 
   return (
-    <Card key={id} asChild>
+    <Card asChild>
       <motion.li
         transition={{ ease: "easeInOut" }}
         initial={{ translateX: "100%", opacity: 0 }}

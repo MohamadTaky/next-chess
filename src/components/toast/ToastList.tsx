@@ -10,7 +10,7 @@ export default function ToastList() {
     <ul className="fixed right-0 top-16 z-50 w-full max-w-xs space-y-2 overflow-hidden px-2">
       <AnimatePresence>
         {toastMessages.map((message) => (
-          <ToastItem {...message} />
+          <ToastItem key={message.id} {...message} />
         ))}
       </AnimatePresence>
     </ul>

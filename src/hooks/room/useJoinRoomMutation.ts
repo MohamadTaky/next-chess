@@ -20,8 +20,7 @@ export default function useJoinRoomMutation() {
       const channel = pusherClient.subscribe(toPusherKey(`presence-room:${roomId}`));
       return channel;
     },
-    onSuccess: (members, roomId, context) => {
-      context?.unbind_all();
+    onSuccess: (members, roomId) => {
       push(`room/${roomId}`);
       if (members.count === 1) return;
       setIsGameStarted(true);

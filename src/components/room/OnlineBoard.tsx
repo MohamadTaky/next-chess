@@ -44,7 +44,7 @@ export default function OnlineBoard() {
             fromCol: selectedTile.col,
             toRow: row,
             toCol: col,
-            socketId: pusherClient!.connection.socket_id,
+            socketId: pusherClient.connection.socket_id,
           });
           setIsPlayerTurn(false);
           return;
