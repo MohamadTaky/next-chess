@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 import "./globals.css";
 import ToastList from "@/components/toast/ToastList";
 
-// const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Chess",
@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html className="h-full" lang="en">
       <ReactQueryClientProvider>
         <body
-          className={`${isDarkMode} h-fill-available scrollbar-rounded grid grid-rows-[auto_1fr] gap-2 bg-fill-3 text-sm text-primary scrollbar-thin scrollbar-thumb-fill-1 md:text-base`}
+          className={`${inter.className} ${isDarkMode} h-fill-available scrollbar-rounded grid grid-rows-[auto_1fr] gap-2 bg-fill-3 text-sm text-primary scrollbar-thin scrollbar-thumb-fill-1 md:text-base`}
         >
           <Header />
           <main className="relative px-2">
