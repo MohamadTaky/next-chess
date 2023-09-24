@@ -1,8 +1,8 @@
-import useStore from "@/store/useStore";
-import Board from "../shared/board/Board";
-import { getPositionString, isWhite } from "@/utils/helpers";
-import { pusherClient } from "@/lib/pusher";
+import Board from "@/components/shared/board/Board";
 import useMoveMutation from "@/hooks/room/useMoveMutation";
+import { pusherClient } from "@/lib/pusher";
+import useStore from "@/store/useStore";
+import { getPositionString, isWhite } from "@/utils/helpers";
 
 export default function OnlineBoard() {
   const board = useStore((store) => store.board);
@@ -51,6 +51,7 @@ export default function OnlineBoard() {
         }
       }
     }
+    setPromotionTile(null);
     setSelectedTile({ row, col });
   };
   return <Board tileClickhandler={clickHandler} />;

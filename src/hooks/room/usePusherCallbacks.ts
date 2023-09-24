@@ -17,6 +17,7 @@ export default function usePusherCallbacks() {
   const setIsPlayerTurn = useStore((store) => store.setIsPlayerTurn);
   const setIsGameStarted = useStore((store) => store.setIsGameStarted);
   const setOpponentInfo = useStore((store) => store.setOpponentInfo);
+  const setPlayerConnectionState = useStore((store) => store.setPlayerConnectionState);
   const addMessage = useStore((store) => store.addMessage);
   const initGameSlice = useStore((store) => store.initGameSlice);
   const initRoomSlice = useStore((store) => store.initRoomSlice);
@@ -43,16 +44,25 @@ export default function usePusherCallbacks() {
       setIsGameStarted(true);
     };
 
+    const connectionStateHandler = (states: {
+      previous: RoomSliceStates["playerConnectionState"];
+      current: RoomSliceStates["playerConnectionState"];
+    }) => {
+      setPlayerConnectionState(states.current);
+    };
+
     const channelName = toPusherKey(`presence-room:${roomId}`);
     const channel = pusherClient.channel(channelName) ?? pusherClient.subscribe(channelName);
     channel.bind("move", moveHandler);
     channel.bind("promote", promotionHandler);
     channel.bind("incoming-message", incomingMessageHandler);
     channel.bind("pusher:member_added", opponentInfoHandler);
+    pusherClient.connection.bind("state_change", connectionStateHandler);
 
     return () => {
       channel.unbind_all();
       channel.unsubscribe();
+      pusherClient.connection.unbind_all();
       initGameSlice();
       initRoomSlice();
     };

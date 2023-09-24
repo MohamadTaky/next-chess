@@ -26,7 +26,7 @@ export default function MessageForm() {
     }
   };
   return (
-    <form onSubmit={sendMessage} className="mt-auto flex items-center gap-2 p-2">
+    <form onSubmit={sendMessage} className="mt-auto flex items-center gap-2">
       <textarea
         onChange={(e) => setInput(e.target.value)}
         onKeyUp={enterSubmit}

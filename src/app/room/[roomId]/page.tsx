@@ -1,6 +1,7 @@
 "use client";
 
 import Chat from "@/components/room/Chat";
+import ConnectionStatus from "@/components/room/ConnectionStatus";
 import OnlineBoard from "@/components/room/OnlineBoard";
 import OnlineEndGameMenu from "@/components/room/OnlineEndGameMenu";
 import OnlinePromotionMenu from "@/components/room/OnlinePromotionMenu";
@@ -13,10 +14,10 @@ export default function RoomPage() {
 
   usePusherCallbacks();
 
-  return isGameStarted ? (
+  return !isGameStarted ? (
     <section className="grid h-full gap-4 md:grid-cols-[minmax(auto,24rem)_1fr] lg:grid-cols-[minmax(auto,28rem)_1fr]">
       <Chat />
-      <div>
+      <div className="space-y-2">
         <OnlineBoard />
         <OnlinePromotionMenu />
         <OnlineEndGameMenu />

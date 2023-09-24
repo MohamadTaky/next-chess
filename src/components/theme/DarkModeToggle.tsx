@@ -22,7 +22,7 @@ export default function DarkModeToggle({ darkMode }: DarkModeToggleProps) {
   };
 
   return (
-    <Button variant="outline" onClick={handleClick}>
+    <Button variant="outline" shape="squared" onClick={handleClick}>
       {isDarkMode ? <MoonIcon /> : <SunIcon />}
     </Button>
   );

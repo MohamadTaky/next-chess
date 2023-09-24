@@ -1,20 +1,46 @@
-import CreateRoomButton from "@/components/room/CreateRoomButton";
-import JoinRoomForm from "@/components/room/JoinRoomForm";
+"use client";
+
+import ErrorCard from "@/components/room/ErrorCard";
 import PlayerInfo from "@/components/room/PlayerInfo";
+import Button from "@/components/shared/Button";
 import Card from "@/components/shared/Card";
+import Input from "@/components/shared/Input";
+import Seperator from "@/components/shared/Seperator";
+import useJoinRoomMutation from "@/hooks/room/useJoinRoomMutation";
+import { FormEvent, useState } from "react";
 
 export default function RoomsPage() {
+  const [roomId, setRoomId] = useState("");
+
+  const { mutate, isLoading, error, reset } = useJoinRoomMutation();
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const submitEvent = e.nativeEvent as SubmitEvent;
+    const submitButton = submitEvent.submitter as HTMLButtonElement;
+    mutate(submitButton.value === "join" ? roomId : crypto.randomUUID());
+  };
+
   return (
-    <Card asChild className="absolute left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 space-y-4">
-      <section>
-        <PlayerInfo />
-        <CreateRoomButton />
-        <div className="relative isolate">
-          <span className="absolute top-1/2 h-0.5 w-full -translate-y-1/2 bg-black/80" />
-          <div className="relative mx-auto grid aspect-square w-10 place-items-center bg-fill-2">or</div>
-        </div>
-        <JoinRoomForm />
-      </section>
-    </Card>
+    <>
+      <form onSubmit={handleSubmit}>
+        <Card
+          asChild
+          className="relative z-10 mx-auto w-full max-w-md space-y-4 disabled:cursor-not-allowed disabled:opacity-20"
+        >
+          <fieldset disabled={isLoading}>
+            <PlayerInfo />
+            <Button type="submit" value="create" className="w-full">
+              Create room
+            </Button>
+            <Seperator>or</Seperator>
+            <Input placeholder="Enter room id" value={roomId} onChange={(e) => setRoomId(e.target.value)} />
+            <Button disabled={!roomId} type="submit" value="join" className="w-full">
+              Join room
+            </Button>
+          </fieldset>
+        </Card>
+      </form>
+      <ErrorCard error={error} reset={reset} />
+    </>
   );
 }

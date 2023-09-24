@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <Card asChild className="absolute left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 space-y-4">
+    <Card asChild className="mx-auto w-full max-w-md space-y-4">
       <section>
         <Button className="w-full" asChild>
           <Link href="/local">play locally</Link>

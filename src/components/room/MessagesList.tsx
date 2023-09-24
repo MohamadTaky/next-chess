@@ -8,7 +8,7 @@ export default function MessagesList() {
 
   return (
     <div className="relative flex-1">
-      <ul className="scrollbar-rounded absolute inset-0 flex flex-col gap-2 overflow-auto px-2 scrollbar-thin scrollbar-thumb-fill-1">
+      <ul className="scrollbar-rounded absolute inset-0 flex flex-col gap-2 overflow-auto scrollbar-thin scrollbar-thumb-fill-1">
         <AnimatePresence>
           {messages.map(({ text, recieved }, i) => (
             <motion.li

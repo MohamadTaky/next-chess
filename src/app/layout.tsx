@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import ReactQueryClientProvider from "@/lib/ReactQueryClientProvider";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 
@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html className="h-full" lang="en">
       <ReactQueryClientProvider>
         <body
-          className={`${inter.className} ${isDarkMode} h-fill-available grid grid-rows-[auto_1fr] gap-2 bg-fill-3 text-sm text-primary md:text-base`}
+          className={`${inter.className} ${isDarkMode} h-fill-available scrollbar-rounded grid grid-rows-[auto_1fr] gap-2 bg-fill-3 text-sm text-primary scrollbar-thin scrollbar-thumb-fill-1 md:text-base`}
         >
           <Header />
           <main className="relative px-2">{children}</main>

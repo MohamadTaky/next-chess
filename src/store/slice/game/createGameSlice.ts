@@ -1,9 +1,9 @@
-import { StateCreator } from "zustand";
-import { INITIAL_BOARD } from "../../../utils/constants";
-import { getPositionObject, getPositionString, isWhite } from "../../../utils/helpers";
-import { getAttacks, getValidMoves } from "../../../utils/moves";
-import GameSlice, { GameSliceStates, Piece } from "./types";
 import useStore from "@/store/useStore";
+import { INITIAL_BOARD } from "@/utils/constants";
+import { getPositionObject, getPositionString, isWhite } from "@/utils/helpers";
+import { getAttacks, getValidMoves } from "@/utils/moves";
+import { StateCreator } from "zustand";
+import GameSlice, { GameSliceStates, Piece } from "./types";
 
 const initialGameSlice: GameSliceStates = {
   board: INITIAL_BOARD.map((arr) => arr.map((piece) => piece as Piece)),

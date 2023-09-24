@@ -19,7 +19,7 @@ export default function PromotionMenu({ handlePromotion }: PromotionMenuProps) {
   const promotionTile = useStore((store) => store.promotionTile);
   const isWhiteTurn = useStore((store) => store.isWhiteTurn);
   return (
-    <div className="mx-auto flex w-fit gap-2">
+    <div className="mx-auto flex min-h-[2.375rem] w-fit gap-2">
       <AnimatePresence>
         {promotionTile && (
           <>
