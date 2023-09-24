@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
+import ToastList from "@/components/toast/ToastList";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           className={`${inter.className} ${isDarkMode} h-fill-available scrollbar-rounded grid grid-rows-[auto_1fr] gap-2 bg-fill-3 text-sm text-primary scrollbar-thin scrollbar-thumb-fill-1 md:text-base`}
         >
           <Header />
-          <main className="relative px-2">{children}</main>
+          <main className="relative px-2">
+            {children}
+            <ToastList />
+          </main>
           <Footer />
         </body>
       </ReactQueryClientProvider>

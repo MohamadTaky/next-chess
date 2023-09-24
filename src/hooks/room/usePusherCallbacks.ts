@@ -6,11 +6,12 @@ import toPusherKey from "@/utils/toPusherKey";
 import { postRequestType as messageRequestType } from "@/utils/validators/room/message/validator";
 import { postRequestType as moveRequestType } from "@/utils/validators/room/move/validator";
 import { postRequestType as promoteRequestType } from "@/utils/validators/room/promote/validator";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function usePusherCallbacks() {
   const { roomId } = useParams() as { roomId: string };
+  const { replace } = useRouter();
 
   const move = useStore((store) => store.move);
   const promote = useStore((store) => store.promote);
@@ -19,6 +20,7 @@ export default function usePusherCallbacks() {
   const setOpponentInfo = useStore((store) => store.setOpponentInfo);
   const setPlayerConnectionState = useStore((store) => store.setPlayerConnectionState);
   const addMessage = useStore((store) => store.addMessage);
+  const addToastMessage = useStore((store) => store.addToastMessage);
   const initGameSlice = useStore((store) => store.initGameSlice);
   const initRoomSlice = useStore((store) => store.initRoomSlice);
 
@@ -48,6 +50,19 @@ export default function usePusherCallbacks() {
       previous: RoomSliceStates["playerConnectionState"];
       current: RoomSliceStates["playerConnectionState"];
     }) => {
+      console.log(states.current);
+      switch (states.current) {
+        case "connecting":
+          addToastMessage({ text: "Network error occurred, tyying to reconnect", type: "error" });
+          break;
+        case "unavailable":
+          addToastMessage({ text: "Failed to reconnect, redirecting to room page", type: "error" });
+          replace("/room");
+          break;
+        case "connected":
+          addToastMessage({ text: "Reconnected successfully, you can resume the session !", type: "success" });
+          break;
+      }
       setPlayerConnectionState(states.current);
     };
 

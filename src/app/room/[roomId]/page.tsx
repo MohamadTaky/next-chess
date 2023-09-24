@@ -1,7 +1,6 @@
 "use client";
 
 import Chat from "@/components/room/Chat";
-import ConnectionStatus from "@/components/room/ConnectionStatus";
 import OnlineBoard from "@/components/room/OnlineBoard";
 import OnlineEndGameMenu from "@/components/room/OnlineEndGameMenu";
 import OnlinePromotionMenu from "@/components/room/OnlinePromotionMenu";

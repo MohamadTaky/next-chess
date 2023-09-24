@@ -1,10 +1,10 @@
 "use client";
 
 import cn from "@/utils/cn";
-import { cva, VariantProps } from "class-variance-authority";
-import { ButtonHTMLAttributes, ForwardedRef, forwardRef } from "react";
 import { Slot } from "@radix-ui/react-slot";
+import { cva, VariantProps } from "class-variance-authority";
 import { Loader2Icon } from "lucide-react";
+import { ButtonHTMLAttributes, ForwardedRef, forwardRef } from "react";
 
 const buttonVariants = cva(
   "block rounded-md w-fit relative transition text-center text-sm md:text-base disabled:cursor-not-allowed",

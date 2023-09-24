@@ -2,6 +2,7 @@ import { pusherClient } from "@/lib/pusher";
 import { RoomSliceStates } from "@/store/slice/room/types";
 import useStore from "@/store/useStore";
 import toPusherKey from "@/utils/toPusherKey";
+import { UUID } from "crypto";
 import { useRouter } from "next/navigation";
 import { Channel, Members } from "pusher-js";
 import useTransitionMutation from "../shared/useTransitionMutation";
@@ -9,10 +10,11 @@ import useTransitionMutation from "../shared/useTransitionMutation";
 export default function useJoinRoomMutation() {
   const { push } = useRouter();
   const setIsGameStarted = useStore((store) => store.setIsGameStarted);
+  const addToastMessage = useStore((store) => store.addToastMessage);
   const setIsPlayerTurn = useStore((store) => store.setIsPlayerTurn);
   const setOpponentInfo = useStore((store) => store.setOpponentInfo);
 
-  return useTransitionMutation<Members, string, string, Channel>({
+  return useTransitionMutation<Members, string, UUID, Channel>({
     mutationFn: joinRoom,
     onMutate: (roomId) => {
       const channel = pusherClient.subscribe(toPusherKey(`presence-room:${roomId}`));
@@ -28,13 +30,16 @@ export default function useJoinRoomMutation() {
         if (member.id !== members.myID) setOpponentInfo(member);
       });
     },
+    onError: (error) => {
+      addToastMessage({ text: error, type: "error" });
+    },
     onSettled: (_members, _error, _roomId, channel) => {
       channel?.unbind_all();
     },
   });
 }
 
-function joinRoom(roomId: string) {
+function joinRoom(roomId: UUID) {
   return new Promise<Members>((resolve, reject) => {
     const channel = pusherClient.channel(toPusherKey(`presence-room:${roomId}`));
     const successCallback = (members: Members) => {
