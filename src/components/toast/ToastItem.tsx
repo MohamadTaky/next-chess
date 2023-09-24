@@ -29,7 +29,7 @@ export default function ToastItem({ text, type, id, duration = 5000 }: ToastItem
   useEffect(() => {
     let timeoutId = setTimeout(handleDelete, duration);
     return () => clearTimeout(timeoutId);
-  }, [duration]);
+  }, [handleDelete, duration]);
 
   return (
     <Card asChild>

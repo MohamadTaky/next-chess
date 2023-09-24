@@ -17,7 +17,7 @@ export default function LocalBoard() {
   const setPromotionTile = useStore((store) => store.setPromotionTile);
   const move = useStore((store) => store.move);
   const initGameSlice = useStore((store) => store.initGameSlice);
-  useEffect(initGameSlice, []);
+  useEffect(initGameSlice, [initGameSlice]);
 
   const clickHandler = (row: number, col: number) => {
     if (selectedTile && isWhiteTurn === isWhite(board, selectedTile.row, selectedTile.col)) {

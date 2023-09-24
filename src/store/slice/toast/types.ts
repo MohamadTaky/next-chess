@@ -1,17 +1,17 @@
 import { ArrayElement } from "@/utils/arrayElement";
-import { UUID } from "crypto";
+
 
 export type ToastSliceStates = {
   toastMessages: {
     type: "error" | "success";
     text: string;
-    id: UUID;
+    id: string;
   }[];
 };
 
 export type ToastSliceActions = {
   addToastMessage: (message: Omit<ArrayElement<ToastSliceStates["toastMessages"]>, "id">) => void;
-  deleteToastMessage: (id: UUID) => void;
+  deleteToastMessage: (id: string) => void;
 };
 
 type ToastSlice = ToastSliceStates & ToastSliceActions;

@@ -3,13 +3,12 @@ import useStore from "@/store/useStore";
 import toPusherKey from "@/utils/toPusherKey";
 import { postRequestType } from "@/utils/validators/room/heartbeat/validator";
 import axios from "axios";
-import { UUID } from "crypto";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useMutation } from "react-query";
 
 export default function useHeartbeatMutation() {
-  const { roomId } = useParams() as { roomId: UUID };
+  const { roomId } = useParams() as { roomId: string };
   const { replace } = useRouter();
   const retriesRef = useRef(0);
   const lastSignalRef = useRef(0);
@@ -51,7 +50,8 @@ export default function useHeartbeatMutation() {
       if (isError) return;
       const signalDeltatime = performance.now() - lastSignalRef.current;
       if (signalDeltatime > 27000) {
-        addToastMessage({ text: "opponent disonected from the game", type: "error" });
+        addToastMessage({ text: "opponent disonected from the game, redirecting to room page", type: "error" });
+        setTimeout(() => replace("/room"), 3000);
       } else if (signalDeltatime > 13000) {
         opponentNetworkWarning = true;
         addToastMessage({ text: "opponent has encountered network errors, trying to reconnect", type: "error" });
@@ -77,6 +77,6 @@ export default function useHeartbeatMutation() {
   }, [isGameStarted]);
 }
 
-function heartbeatMutaiton(data: postRequestType, roomId: UUID) {
+function heartbeatMutaiton(data: postRequestType, roomId: string) {
   return axios.post(`/api/room/${roomId}/heartbeat`, data);
 }
