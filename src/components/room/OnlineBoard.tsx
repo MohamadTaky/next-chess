@@ -18,6 +18,8 @@ export default function OnlineBoard() {
   const setIsPlayerTurn = useStore((store) => store.setIsPlayerTurn);
   const move = useStore((store) => store.move);
   const initGameSlice = useStore((store) => store.initGameSlice);
+  const isPlayingWhite = useStore((store) => store.isPlayingWhite);
+
   const { mutate } = useMoveMutation();
 
   const clickHandler = (row: number, col: number) => {
@@ -54,5 +56,5 @@ export default function OnlineBoard() {
     setPromotionTile(null);
     setSelectedTile({ row, col });
   };
-  return <Board tileClickhandler={clickHandler} />;
+  return <Board tileClickhandler={clickHandler} flipped={!isPlayingWhite} />;
 }

@@ -12,6 +12,7 @@ export default function useJoinRoomMutation() {
   const addToastMessage = useStore((store) => store.addToastMessage);
   const setIsPlayerTurn = useStore((store) => store.setIsPlayerTurn);
   const setOpponentInfo = useStore((store) => store.setOpponentInfo);
+  const setIsPlayingWhite = useStore((store) => store.setIsPlayingWhite);
 
   return useTransitionMutation<Members, string, string, Channel>({
     mutationFn: joinRoom,
@@ -24,6 +25,7 @@ export default function useJoinRoomMutation() {
       if (members.count === 1) return;
       setIsGameStarted(true);
       setIsPlayerTurn(false);
+      setIsPlayingWhite(false);
       members.each((member: NonNullable<RoomSliceStates["opponentInfo"]>) => {
         if (member.id !== members.myID) setOpponentInfo(member);
       });

@@ -1,6 +1,7 @@
 export type RoomSliceStates = {
   isGameStarted: boolean;
   isPlayerTurn: boolean;
+  isPlayingWhite: boolean;
   playerConnectionState: "connected" | "connecting" | "unavailable";
   opponentConnectionState: "";
   opponentInfo: {
@@ -18,6 +19,7 @@ export type RoomSliceStates = {
 export type RoomSliceActions = {
   setIsGameStarted: (isGameStarted: boolean) => void;
   setIsPlayerTurn: (isPlayerTurn: boolean) => void;
+  setIsPlayingWhite: (isPlayingWhite: boolean) => void;
   setPlayerConnectionState: (playerConnectionState: RoomSliceStates["playerConnectionState"]) => void;
   setOpponentConnectionState: (opponentConnectionState: RoomSliceStates["opponentConnectionState"]) => void;
   setOpponentInfo: (opponentInfo: RoomSliceStates["opponentInfo"]) => void;

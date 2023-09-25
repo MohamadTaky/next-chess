@@ -7,7 +7,7 @@ import cn from "@/utils/cn";
 import { cva } from "class-variance-authority";
 import { motion } from "framer-motion";
 import { AlertCircleIcon, XIcon } from "lucide-react";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 type ToastItemProps = ArrayElement<ToastSliceStates["toastMessages"]> & {
   duration?: number;
@@ -25,7 +25,7 @@ const toastItemVariants = cva("relative items-center", {
 
 export default function ToastItem({ text, type, id, duration = 5000 }: ToastItemProps) {
   const deleteToastMessage = useStore((store) => store.deleteToastMessage);
-  const handleDelete = () => deleteToastMessage(id);
+  const handleDelete = useCallback(() => deleteToastMessage(id), []);
   useEffect(() => {
     let timeoutId = setTimeout(handleDelete, duration);
     return () => clearTimeout(timeoutId);

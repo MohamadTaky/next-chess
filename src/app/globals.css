@@ -13,6 +13,9 @@
     @apply h-screen;
     height: -webkit-fill-available;
   }
+  .fill-box {
+    transform-box: fill-box;
+  }
 }
 
 @layer base {
