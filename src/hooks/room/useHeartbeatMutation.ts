@@ -11,22 +11,26 @@ export default function useHeartbeatMutation() {
   const { roomId } = useParams() as { roomId: string };
   const { replace } = useRouter();
   const retriesRef = useRef(0);
-  const lastSignalRef = useRef(0);
+  const opponentNetworkWarningRef = useRef<NodeJS.Timeout>();
+  const opponentNetworkErrorRef = useRef<NodeJS.Timeout>();
   const isGameStarted = useStore((store) => store.isGameStarted);
   const addToastMessage = useStore((store) => store.addToastMessage);
-  const { mutate, isError } = useMutation((variables: postRequestType) => heartbeatMutaiton(variables, roomId), {
+  const { mutate } = useMutation((variables: postRequestType) => heartbeatMutaiton(variables, roomId), {
     onSettled: (_data, error, _variables) => {
       if (error) {
-        if (retriesRef.current === 3) {
-          addToastMessage({ text: "Failed to reconnect, redirecting to room page", type: "error" });
-          setTimeout(() => replace("/room"), 3000);
-        } else if (retriesRef.current === 0) {
-          addToastMessage({ text: "Network error occurred, trying to reconnect", type: "error" });
+        switch (retriesRef.current) {
+          case 3:
+            addToastMessage({ text: "Failed to reconnect, redirecting to room page", type: "error" });
+            setTimeout(() => replace("/room"), 3000);
+            break;
+          case 0:
+            addToastMessage({ text: "Network error occurred, trying to reconnect", type: "error" });
+            clearTimeout(opponentNetworkWarningRef.current);
+            clearTimeout(opponentNetworkErrorRef.current);
+            break;
         }
         retriesRef.current++;
-        return;
-      }
-      if (retriesRef.current !== 0) {
+      } else if (retriesRef.current !== 0) {
         addToastMessage({ text: "Reconnected successfully, you can resume the session !", type: "success" });
         retriesRef.current = 0;
       }
@@ -34,35 +38,22 @@ export default function useHeartbeatMutation() {
   });
 
   useEffect(() => {
-    if (isError) return;
-    lastSignalRef.current = performance.now();
-  }, [isError]);
-
-  useEffect(() => {
     if (!isGameStarted) return;
-    lastSignalRef.current = performance.now();
-    let opponentNetworkWarning = false;
 
     let heartbeatSendInterval = setInterval(() => {
       mutate({ socketId: pusherClient.connection.socket_id });
     }, 10000);
-    let heartbeatCheckInterval = setInterval(() => {
-      if (isError) return;
-      const signalDeltatime = performance.now() - lastSignalRef.current;
-      if (signalDeltatime > 27000) {
+
+    const heartbeatHandler = () => {
+      clearTimeout(opponentNetworkWarningRef.current);
+      clearTimeout(opponentNetworkErrorRef.current);
+      opponentNetworkWarningRef.current = setTimeout(() => {
+        addToastMessage({ text: "opponent has encountered network errors, trying to reconnect", type: "error" });
+      }, 13000);
+      opponentNetworkErrorRef.current = setTimeout(() => {
         addToastMessage({ text: "opponent disonected from the game, redirecting to room page", type: "error" });
         setTimeout(() => replace("/room"), 3000);
-      } else if (signalDeltatime > 13000) {
-        opponentNetworkWarning = true;
-        addToastMessage({ text: "opponent has encountered network errors, trying to reconnect", type: "error" });
-      }
-    }, 5000);
-    const heartbeatHandler = () => {
-      lastSignalRef.current = performance.now();
-      if (opponentNetworkWarning) {
-        addToastMessage({ text: "Opponent reconnected successfully", type: "success" });
-        opponentNetworkWarning = false;
-      }
+      }, 33000);
     };
 
     const channelName = toPusherKey(`presence-room:${roomId}`);
@@ -71,7 +62,8 @@ export default function useHeartbeatMutation() {
 
     return () => {
       clearInterval(heartbeatSendInterval);
-      clearInterval(heartbeatCheckInterval);
+      clearTimeout(opponentNetworkWarningRef.current);
+      clearTimeout(opponentNetworkErrorRef.current);
       channel.unbind("heartbeat", heartbeatHandler);
     };
   }, [isGameStarted]);
