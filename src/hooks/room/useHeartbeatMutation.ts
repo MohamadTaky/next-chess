@@ -40,6 +40,7 @@ export default function useHeartbeatMutation() {
   useEffect(() => {
     if (!isGameStarted) return;
 
+    let opponentWarning = false;
     let heartbeatSendInterval = setInterval(() => {
       mutate({ socketId: pusherClient.connection.socket_id });
     }, 10000);
@@ -47,8 +48,13 @@ export default function useHeartbeatMutation() {
     const heartbeatHandler = () => {
       clearTimeout(opponentNetworkWarningRef.current);
       clearTimeout(opponentNetworkErrorRef.current);
+      if (opponentWarning) {
+        opponentWarning = false;
+        addToastMessage({ text: "opponent reconnected successfully !", type: "success" });
+      }
       opponentNetworkWarningRef.current = setTimeout(() => {
         addToastMessage({ text: "opponent has encountered network errors, trying to reconnect", type: "error" });
+        opponentWarning = true;
       }, 13000);
       opponentNetworkErrorRef.current = setTimeout(() => {
         addToastMessage({ text: "opponent disonected from the game, redirecting to room page", type: "error" });
