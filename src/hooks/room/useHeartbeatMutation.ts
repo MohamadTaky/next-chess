@@ -1,6 +1,6 @@
 import { pusherClient } from "@/lib/pusher";
 import useStore from "@/store/useStore";
-import toPusherKey from "@/utils/toPusherKey";
+import {toPusherKey} from "@/utils/pusher";
 import { postRequestType } from "@/utils/validators/room/heartbeat/validator";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
@@ -8,12 +8,11 @@ import { useEffect, useRef } from "react";
 import { useMutation } from "react-query";
 
 export default function useHeartbeatMutation() {
-  const { roomId } = useParams() as { roomId: string };
+  const { roomId } = useParams();
   const { replace } = useRouter();
   const retriesRef = useRef(0);
   const opponentNetworkWarningRef = useRef<NodeJS.Timeout>();
   const opponentNetworkErrorRef = useRef<NodeJS.Timeout>();
-  const isGameStarted = useStore((store) => store.isGameStarted);
   const addToastMessage = useStore((store) => store.addToastMessage);
   const { mutate } = useMutation((variables: postRequestType) => heartbeatMutaiton(variables, roomId), {
     onSettled: (_data, error, _variables) => {
@@ -38,8 +37,6 @@ export default function useHeartbeatMutation() {
   });
 
   useEffect(() => {
-    if (!isGameStarted) return;
-
     let opponentWarning = false;
     let heartbeatSendInterval = setInterval(() => {
       mutate({ socketId: pusherClient.connection.socket_id });
@@ -72,7 +69,7 @@ export default function useHeartbeatMutation() {
       clearTimeout(opponentNetworkErrorRef.current);
       channel.unbind("heartbeat", heartbeatHandler);
     };
-  }, [isGameStarted]);
+  }, []);
 }
 
 function heartbeatMutaiton(data: postRequestType, roomId: string) {

@@ -1,19 +1,26 @@
 import Button from "@/components/shared/Button";
+import useStoreMutation from "@/hooks/room/useStoreMutation";
+import { pusherClient } from "@/lib/pusher";
 import useStore from "@/store/useStore";
+import { getCookie } from "@/utils/cookies";
+import stringifyStore from "@/utils/stringifyStore";
 import { SendHorizonalIcon } from "lucide-react";
 import { FormEvent, KeyboardEvent, useState } from "react";
-import useSendMessageMutaion from "@/hooks/room/useSendMessageMutation";
-import { pusherClient } from "@/lib/pusher";
 
 export default function MessageForm() {
   const [input, setInput] = useState("");
   const addMessage = useStore((store) => store.addMessage);
-  const { mutate } = useSendMessageMutaion();
+  const { mutate } = useStoreMutation();
+
+  const userId = getCookie("userid") as string;
 
   const sendMessage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addMessage({ text: input, recieved: false });
-    mutate({ message: input, socketId: pusherClient.connection.socket_id });
+    addMessage({ text: input, senderId: userId });
+    setTimeout(
+      () => mutate({ storeString: stringifyStore(useStore.getState()), socketId: pusherClient.connection.socket_id }),
+      0,
+    );
     setInput("");
   };
 

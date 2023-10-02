@@ -23,9 +23,7 @@ const pusherClient =
     channelAuthorization: {
       endpoint: "/api/channel/auth",
       transport: "ajax",
-      params: {
-        username: usePersistedStore.getState().playerName,
-      },
+      paramsProvider: () => ({ username: usePersistedStore.getState().playerName }),
     },
   });
 

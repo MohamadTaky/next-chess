@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/shared/Button";
+import { setCookie } from "@/utils/cookies";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -13,10 +14,10 @@ export default function DarkModeToggle({ darkMode }: DarkModeToggleProps) {
   const handleClick = () => {
     if (isDarkMode) {
       document.body.classList.remove("dark");
-      document.cookie = "dark=; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+      setCookie("dark=; expires=Thu, 01 Jan 1970 00:00:01 GMT");
     } else {
       document.body.classList.add("dark");
-      document.cookie = `dark=1; expires=${new Date(Date.now() + 60 * 60 * 24 * 365 * 1000)}; path=/`;
+      setCookie(`dark=1; expires=${new Date(Date.now() + 60 * 60 * 24 * 365 * 1000)}; path=/`);
     }
     setIsDarkMode(!isDarkMode);
   };

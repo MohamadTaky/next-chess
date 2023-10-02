@@ -1,29 +1,21 @@
+import { ArrayElement } from "@/utils/arrayElement";
+import { Members } from "pusher-js";
+
 export type RoomSliceStates = {
-  isGameStarted: boolean;
-  isPlayerTurn: boolean;
-  isPlayingWhite: boolean;
-  playerConnectionState: "connected" | "connecting" | "unavailable";
-  opponentConnectionState: "";
-  opponentInfo: {
-    id: string;
-    info: {
-      username: string;
-    };
-  } | null;
+  whitePlayerId: string;
+  lastMovePlayerId: string;
+  members: Members | null;
   messages: {
     text: string;
-    recieved: boolean;
+    senderId: string;
   }[];
 };
 
 export type RoomSliceActions = {
-  setIsGameStarted: (isGameStarted: boolean) => void;
-  setIsPlayerTurn: (isPlayerTurn: boolean) => void;
-  setIsPlayingWhite: (isPlayingWhite: boolean) => void;
-  setPlayerConnectionState: (playerConnectionState: RoomSliceStates["playerConnectionState"]) => void;
-  setOpponentConnectionState: (opponentConnectionState: RoomSliceStates["opponentConnectionState"]) => void;
-  setOpponentInfo: (opponentInfo: RoomSliceStates["opponentInfo"]) => void;
-  addMessage: (message: { text: string; recieved: boolean }) => void;
+  setWhitePlayerId: (whitePlayerId: string) => void;
+  setlastMovePlayerId: (lastMovePlayerId: string) => void;
+  setMembers: (members: Members) => void;
+  addMessage: (message: ArrayElement<RoomSliceStates["messages"]>) => void;
   initRoomSlice: () => void;
 };
 

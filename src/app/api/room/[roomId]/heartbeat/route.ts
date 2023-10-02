@@ -1,5 +1,5 @@
 import { pusherServer } from "@/lib/pusher";
-import toPusherKey from "@/utils/toPusherKey";
+import {toPusherKey} from "@/utils/pusher";
 import { postRequestValidator } from "@/utils/validators/room/heartbeat/validator";
 import { NextRequest, NextResponse } from "next/server";
 

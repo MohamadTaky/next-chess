@@ -10,8 +10,11 @@ export async function POST(req: NextRequest) {
     username: string;
   };
 
+  const userId = req.cookies.get("userid");
+  if (!userId) return NextResponse.json(new Error("userid is not specified"), { status: 401 });
+
   const presenceData = {
-    user_id: crypto.randomUUID(),
+    user_id: userId.value,
     user_info: { username },
   };
 

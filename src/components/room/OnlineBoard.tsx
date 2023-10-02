@@ -1,8 +1,10 @@
 import Board from "@/components/shared/board/Board";
-import useMoveMutation from "@/hooks/room/useMoveMutation";
+import useStoreMutation from "@/hooks/room/useStoreMutation";
 import { pusherClient } from "@/lib/pusher";
 import useStore from "@/store/useStore";
+import { getCookie } from "@/utils/cookies";
 import { getPositionString, isWhite } from "@/utils/helpers";
+import stringifyStore from "@/utils/stringifyStore";
 
 export default function OnlineBoard() {
   const board = useStore((store) => store.board);
@@ -12,21 +14,22 @@ export default function OnlineBoard() {
   const specialMoves = useStore((store) => store.specialMoves);
   const selectedTile = useStore((store) => store.selectedTile);
   const isWhiteTurn = useStore((store) => store.isWhiteTurn);
-  const isPlayerTurn = useStore((store) => store.isPlayerTurn);
+  const lastMovePlayerId = useStore((store) => store.lastMovePlayerId);
+  const setlastMovePlayerId = useStore((store) => store.setlastMovePlayerId);
+  const whitePlayerId = useStore((store) => store.whitePlayerId);
+  const userId = getCookie("userid");
   const setSelectedTile = useStore((store) => store.setSelectedTile);
   const setPromotionTile = useStore((store) => store.setPromotionTile);
-  const setIsPlayerTurn = useStore((store) => store.setIsPlayerTurn);
   const move = useStore((store) => store.move);
   const initGameSlice = useStore((store) => store.initGameSlice);
-  const isPlayingWhite = useStore((store) => store.isPlayingWhite);
 
-  const { mutate } = useMoveMutation();
+  const { mutate } = useStoreMutation();
 
   const clickHandler = (row: number, col: number) => {
     if (selectedTile && isWhiteTurn === isWhite(board, selectedTile.row, selectedTile.col)) {
       const seelctedTilePosition = getPositionString(selectedTile.row, selectedTile.col);
 
-      if (isPlayerTurn) {
+      if (lastMovePlayerId !== userId) {
         const promotions = validPromotions.get(seelctedTilePosition);
         if (promotions?.some((promotion) => promotion === getPositionString(row, col))) {
           setPromotionTile({ row, col });
@@ -40,15 +43,12 @@ export default function OnlineBoard() {
           attacks?.some((attack) => attack === getPositionString(row, col)) ||
           specials?.some((attack) => attack === getPositionString(row, col))
         ) {
+          const userId = getCookie("userid") as string;
           move(selectedTile.row, selectedTile.col, row, col);
-          mutate({
-            fromRow: selectedTile.row,
-            fromCol: selectedTile.col,
-            toRow: row,
-            toCol: col,
-            socketId: pusherClient.connection.socket_id,
-          });
-          setIsPlayerTurn(false);
+          setlastMovePlayerId(userId);
+          setTimeout(() => {
+            mutate({ storeString: stringifyStore(useStore.getState()), socketId: pusherClient.connection.socket_id });
+          }, 0);
           return;
         }
       }
@@ -56,5 +56,5 @@ export default function OnlineBoard() {
     setPromotionTile(null);
     setSelectedTile({ row, col });
   };
-  return <Board tileClickhandler={clickHandler} flipped={!isPlayingWhite} />;
+  return <Board tileClickhandler={clickHandler} flipped={userId !== whitePlayerId} />;
 }

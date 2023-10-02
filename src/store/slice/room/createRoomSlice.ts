@@ -1,25 +1,13 @@
 import { StateCreator } from "zustand";
-import RoomSlice, { RoomSliceStates } from "./types";
-
-const initialRoomSlice: RoomSliceStates = {
-  isGameStarted: false,
-  isPlayerTurn: true,
-  isPlayingWhite: true,
-  opponentInfo: null,
-  opponentConnectionState: "",
-  playerConnectionState: "connected",
-  messages: [],
-};
+import initialRoomSlice from "./inititalRoomSlice";
+import RoomSlice from "./types";
 
 const createRoomSlice: StateCreator<RoomSlice> = (set) => ({
   ...initialRoomSlice,
-  setIsGameStarted: (isGameStarted) => set({ isGameStarted }),
-  setIsPlayerTurn: (isPlayerTurn) => set({ isPlayerTurn }),
-  setIsPlayingWhite: (isPlayingWhite) => set({ isPlayingWhite }),
-  setOpponentInfo: (opponentInfo) => set({ opponentInfo }),
+  setWhitePlayerId: (whitePlayerId) => set({ whitePlayerId }),
+  setlastMovePlayerId: (lastMovePlayerId) => set({ lastMovePlayerId }),
+  setMembers: (members) => set({ members }),
   addMessage: (message) => set((prev) => ({ messages: [...prev.messages, message] })),
-  setOpponentConnectionState: (opponentConnectionState) => set({ opponentConnectionState }),
-  setPlayerConnectionState: (playerConnectionState) => set({ playerConnectionState }),
   initRoomSlice: () => set({ ...initialRoomSlice }),
 });
 

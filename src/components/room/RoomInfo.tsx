@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export default function RoomInfo() {
-  const { roomId } = useParams() as { roomId: string };
+  const { roomId } = useParams();
   const [hasCopied, setHasCopied] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
