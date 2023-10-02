@@ -2,11 +2,11 @@
 
 import Card from "@/components/shared/Card";
 import useStore from "@/store/useStore";
+import { Member } from "@/utils/pusher";
 import { User2Icon } from "lucide-react";
+import { useEffect, useState } from "react";
 import MessageForm from "./MessageForm";
 import MessagesList from "./MessagesList";
-import { Member } from "@/utils/pusher";
-import { useEffect, useState } from "react";
 
 export default function Chat() {
   const members = useStore((store) => store.members);
@@ -15,9 +15,7 @@ export default function Chat() {
     members?.each((member: Member) => {
       if (member.id !== members.myID) setOpponentName(member.info.username);
     });
-  }, []);
-
-  console.log(opponentName);
+  }, [members]);
 
   return (
     <Card className="flex h-screen flex-col max-md:order-last md:h-auto">
