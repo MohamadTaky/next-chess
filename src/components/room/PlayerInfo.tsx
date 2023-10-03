@@ -2,21 +2,19 @@
 
 import Button from "@/components/shared/Button";
 import useToggle from "@/hooks/shared/useToggle";
-import useClientStore from "@/store/useClientStore";
-import usePersistedStore from "@/store/usePersistedStore";
 import { CheckIcon, PenIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import Input from "@/components/shared/Input";
+import { getCookie, setCookie } from "@/utils/cookies";
 
 export default function PlayerInfo() {
   const [isEditingName, toggleEditingName] = useToggle(false);
   const [playerName, setPlayerName] = useState("");
-  const persistedName = useClientStore((store) => store.playerName);
-  const setPersistedName = usePersistedStore((store) => store.setPlayerName);
-  useEffect(() => setPlayerName(persistedName ?? ""), [persistedName]);
+  useEffect(() => setPlayerName(getCookie("username") ?? ""), []);
 
   const handleEditingToggle = () => {
-    if (isEditingName) setPersistedName(playerName);
+    if (isEditingName)
+      setCookie(`username=${playerName}; expires=${new Date(Date.now() + 60 * 60 * 24 * 365 * 1000)}; path=/`);
     toggleEditingName();
   };
 

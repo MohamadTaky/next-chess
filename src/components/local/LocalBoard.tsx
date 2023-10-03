@@ -44,5 +44,5 @@ export default function LocalBoard() {
     setPromotionTile(null);
   };
 
-  return <Board tileClickhandler={clickHandler} />;
+  return <Board tileClickhandler={clickHandler} flipped={!isWhiteTurn} />;
 }

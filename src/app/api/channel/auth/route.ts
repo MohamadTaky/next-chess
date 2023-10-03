@@ -4,17 +4,16 @@ import querystring from "querystring";
 
 export async function POST(req: NextRequest) {
   const data = await req.text();
-  const { socket_id, channel_name, username } = querystring.parse(data) as {
+  const { socket_id, channel_name } = querystring.parse(data) as {
     socket_id: string;
     channel_name: string;
-    username: string;
   };
 
-  const userId = req.cookies.get("userid");
-  if (!userId) return NextResponse.json(new Error("userid is not specified"), { status: 401 });
+  const userId = req.cookies.get("userid")?.value as string;
+  const username = req.cookies.get("username")?.value as string;
 
   const presenceData = {
-    user_id: userId.value,
+    user_id: userId,
     user_info: { username },
   };
 

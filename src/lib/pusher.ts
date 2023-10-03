@@ -1,6 +1,5 @@
 import PusherServer from "pusher";
 import PusherClient from "pusher-js";
-import usePersistedStore from "@/store/usePersistedStore";
 
 const globalPusher = globalThis as unknown as {
   pusherClient: PusherClient | null;
@@ -23,7 +22,6 @@ const pusherClient =
     channelAuthorization: {
       endpoint: "/api/channel/auth",
       transport: "ajax",
-      paramsProvider: () => ({ username: usePersistedStore.getState().playerName }),
     },
   });
 
