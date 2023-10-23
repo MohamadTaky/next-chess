@@ -13,22 +13,23 @@ export function getVariant(row: number, col: number) {
     promotionTile,
     checks,
   } = useStore.getState();
+  const positionString = getPositionString(row, col);
   if (promotionTile?.row === row && promotionTile.col === col) return "promotion";
   if (selectedTile) {
     if (isOccupied(board, row, col) && selectedTile.row === row && selectedTile.col === col)
       return isWhiteTurn === isWhite(board, row, col) ? "select" : "gray";
     const selectedTilePosition = getPositionString(selectedTile.row, selectedTile.col);
     const isWhitePiece = isWhite(board, selectedTile.row, selectedTile.col);
-    if (validMoves.get(selectedTilePosition)?.some((move) => move === getPositionString(row, col)))
+    if (validMoves.get(selectedTilePosition)?.some((move) => move === positionString))
       return isWhitePiece === isWhiteTurn ? "move" : "gray";
-    if (validAttacks.get(selectedTilePosition)?.some((move) => move === getPositionString(row, col)))
+    if (validAttacks.get(selectedTilePosition)?.some((move) => move === positionString))
       return isWhitePiece === isWhiteTurn ? "attack" : "gray";
-    if (specialMoves.get(selectedTilePosition)?.some((move) => move === getPositionString(row, col)))
+    if (specialMoves.get(selectedTilePosition)?.some((move) => move === positionString))
       return isWhitePiece === isWhiteTurn ? "special" : "gray";
-    if (validPromotions.get(selectedTilePosition)?.some((move) => move === getPositionString(row, col)))
+    if (validPromotions.get(selectedTilePosition)?.some((move) => move === positionString))
       return isWhitePiece === isWhiteTurn ? "special" : "gray";
   }
-  if (checks.some((check) => check === getPositionString(row, col))) return "check";
+  if (checks.some((check) => check === positionString)) return "check";
   return (row + col) % 2 ? "dark" : "light";
 }
 

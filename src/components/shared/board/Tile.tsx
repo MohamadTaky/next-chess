@@ -41,7 +41,7 @@ export default function Tile({ row, col, piece, clickHandler, flipped = false }:
         <image
           href={PIECES[piece as keyof typeof PIECES]}
           className={cn(
-            "fill-box pointer-events-none z-50 h-[12.5%] w-[12.5%] origin-center",
+            "fill-box pointer-events-none z-50 h-[12.5%] w-[12.5%] origin-center transition",
             flipped ? "rotate-180" : "",
           )}
           x={`${col * 12.5}%`}
